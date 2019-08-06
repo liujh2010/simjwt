@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SimJWT.Core.Common;
 using SimJWT.Core.JWT;
 
 namespace SimJWT.Core.Base.JSON

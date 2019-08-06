@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimJWT.Core.JWT
+namespace SimJWT.Core.Common
 {
     public interface IJSONSerialization
     {

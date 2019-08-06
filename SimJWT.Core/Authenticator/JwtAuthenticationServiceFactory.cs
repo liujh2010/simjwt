@@ -1,4 +1,5 @@
-﻿using SimJWT.Core.JWT;
+﻿using SimJWT.Core.Common;
+using SimJWT.Core.JWT;
 using SimJWT.Core.JWT.Structure;
 using System;
 using System.Collections.Generic;

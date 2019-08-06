@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using SimJWT.Core.Base;
+using SimJWT.Core.Common;
 using SimJWT.Core.JWT.Structure;
 
 namespace SimJWT.Core.JWT
