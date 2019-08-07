@@ -24,5 +24,6 @@ namespace SimJWT.Core.Base
                 return builder.ToString();
             }
         }
+
     }
 }
