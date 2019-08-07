@@ -21,10 +21,10 @@ namespace SimJWT.Core.JWT
         public Token(THeader h, TPayload p, IBase64URL base64, IJSONSerialization serialization, ICrypter crypter)
         {
             Header = h;
-            Base64Header = base64.Encode(h);
+            Base64Header = base64.Encode(serialization.SerializeToString(h));
 
             Payload = p;
-            Base64Payload = base64.Encode(p);
+            Base64Payload = base64.Encode(serialization.SerializeToString(p));
 
             var encodedClearText = $"{Header}.{Payload}";
 

@@ -6,19 +6,32 @@ namespace SimJWT.Core.Base
 {
     public class Base64URL : IBase64URL
     {
-        public string Decode(string s)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly char[] padding = { '=' };
 
         public string Encode(string s)
         {
-            throw new NotImplementedException();
+            return Convert
+                .ToBase64String(Encoding.ASCII.GetBytes(s))
+                .TrimEnd(padding)
+                .Replace('+', '-')
+                .Replace('/', '_');
         }
 
-        public string Encode(object o)
+        public string Decode(string s)
         {
-            throw new NotImplementedException();
+            var str = s.Replace('_', '/').Replace('-', '+');
+            switch (str.Length % 4)
+            {
+                case 2:
+                    str += "==";
+                    break;
+                case 3:
+                    str += "=";
+                    break;
+            }
+            return Encoding.ASCII
+                .GetString(Convert.FromBase64String(str));
         }
+
     }
 }
