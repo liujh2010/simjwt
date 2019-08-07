@@ -6,6 +6,7 @@ namespace SimJWT.Core.Common
 {
     public interface ISignaturer
     {
+        string GetDigest(string cleanText);
         string GetDigest(string cleanText, string secret);
     }
 }

@@ -8,9 +8,15 @@ namespace SimJWT.Core.Base
 {
     public class HMACSHA256Signaturer : ISignaturer
     {
+        private string _secret = "85&S)@q+y&%8DmqDSMmw9>?x;8;f<EQTES^lW0jt]O=<jzS5$y";
+
+        public HMACSHA256Signaturer(string key) => _secret = key;
+
+        public string GetDigest(string cleanText) => GetDigest(cleanText, _secret);
+
         public string GetDigest(string cleanText, string secret)
         {
-            secret = secret ?? "";
+            secret = secret ?? _secret;
             var keyBytes = Encoding.UTF8.GetBytes(secret);
             var textBytes = Encoding.UTF8.GetBytes(cleanText);
             using (var crypter = new HMACSHA256(keyBytes))
@@ -24,6 +30,5 @@ namespace SimJWT.Core.Base
                 return builder.ToString();
             }
         }
-
     }
 }

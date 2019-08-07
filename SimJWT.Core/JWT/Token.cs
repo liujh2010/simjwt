@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SimJWT.Core.Base;
+﻿using SimJWT.Core.Base;
 using SimJWT.Core.Common;
 using SimJWT.Core.JWT.Structure;
 
@@ -16,46 +13,49 @@ namespace SimJWT.Core.JWT
         public TPayload Payload { get; }
         public string Base64Payload { get; }
         public string Signature { get; }
+        public string Base64Signature { get; }
         public string Jwt { get; }
+        public bool AuthorizedToken { private set; get; }
 
-        public Token(THeader h, TPayload p, IBase64URL base64, IJSONSerialization serialization, ISignaturer crypter)
+        public Token(THeader h, TPayload p, IBase64URL coder, IJSONSerialization serialization, ISignaturer signaturer)
         {
             Header = h;
-            Base64Header = base64.Encode(serialization.SerializeToString(h));
+            Base64Header = coder.Encode(serialization.SerializeToString(h));
 
             Payload = p;
-            Base64Payload = base64.Encode(serialization.SerializeToString(p));
+            Base64Payload = coder.Encode(serialization.SerializeToString(p));
 
-            var encodedClearText = $"{Header}.{Payload}";
+            var encodedClearText = $"{Base64Header}.{Base64Payload}";
+            Signature = signaturer.GetDigest(encodedClearText);
+            Base64Signature = coder.Encode(Signature);
 
-            Signature = encodedClearText;
+            Jwt = $"{Base64Header}.{Base64Payload}.{Base64Signature}";
 
-            Jwt = $"{encodedClearText}.{Signature}";
+            AuthorizedToken = true;
         }
 
-        public Token(string jwt, IBase64URL base64, IJSONSerialization serialization, ISignaturer crypter)
+        public Token(string jwt, IBase64URL coder, IJSONSerialization serialization, ISignaturer signaturer)
         {
             var arr = jwt.Split('.');
 
             Base64Header = arr[0];
-            Header = serialization.DeserializeToObject<THeader>(base64.Decode(Base64Header));
+            Header = serialization.DeserializeToObject<THeader>(coder.Decode(Base64Header));
 
             Base64Payload = arr[1];
-            Payload = serialization.DeserializeToObject<TPayload>(base64.Decode(Base64Payload));
+            Payload = serialization.DeserializeToObject<TPayload>(coder.Decode(Base64Payload));
 
-            Signature = arr[3];
+            Base64Signature = arr[2];
+            Signature = coder.Decode(Base64Signature);
+
+            AuthorizedToken = IsAuthorizedToken(signaturer);
         }
 
-        public bool IsAuthorizedToken(ISignaturer crypter)
+        private bool IsAuthorizedToken(ISignaturer signaturer)
         {
             var encodedClearText = $"{Base64Header}.{Base64Payload}";
-
-            if (encodedClearText == Signature)
-            {
-                return true;
-            }
-            return false;
+            return signaturer
+                .GetDigest(encodedClearText)
+                .Equals(Signature);
         }
-
     }
 }
