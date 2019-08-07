@@ -18,7 +18,7 @@ namespace SimJWT.Core.JWT
         public string Signature { get; }
         public string Jwt { get; }
 
-        public Token(THeader h, TPayload p, IBase64URL base64, IJSONSerialization serialization, ICrypter crypter)
+        public Token(THeader h, TPayload p, IBase64URL base64, IJSONSerialization serialization, ISignaturer crypter)
         {
             Header = h;
             Base64Header = base64.Encode(serialization.SerializeToString(h));
@@ -33,7 +33,7 @@ namespace SimJWT.Core.JWT
             Jwt = $"{encodedClearText}.{Signature}";
         }
 
-        public Token(string jwt, IBase64URL base64, IJSONSerialization serialization, ICrypter crypter)
+        public Token(string jwt, IBase64URL base64, IJSONSerialization serialization, ISignaturer crypter)
         {
             var arr = jwt.Split('.');
 
@@ -46,7 +46,7 @@ namespace SimJWT.Core.JWT
             Signature = arr[3];
         }
 
-        public bool IsAuthorizedToken(ICrypter crypter)
+        public bool IsAuthorizedToken(ISignaturer crypter)
         {
             var encodedClearText = $"{Base64Header}.{Base64Payload}";
 

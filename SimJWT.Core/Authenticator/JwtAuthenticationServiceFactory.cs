@@ -14,7 +14,7 @@ namespace SimJWT.Core.Authenticator
             (TCrypter c, TJsonSerialization j, ServiceOption option)
             where THeader : Header
             where TPayload : Payload
-            where TCrypter : ICrypter
+            where TCrypter : ISignaturer
             where TJsonSerialization : IJSONSerialization
         {
             return new JwtAuthenticationService<THeader, TPayload, TCrypter, TJsonSerialization>(c, j);

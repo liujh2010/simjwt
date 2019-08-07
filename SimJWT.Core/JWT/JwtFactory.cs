@@ -11,9 +11,9 @@ namespace SimJWT.Core.JWT
     {
         private IBase64URL _base64;
         private IJSONSerialization _jSONSerialization;
-        private ICrypter _crypter;
+        private ISignaturer _crypter;
 
-        public JwtFactory(IBase64URL b, IJSONSerialization s, ICrypter c)
+        public JwtFactory(IBase64URL b, IJSONSerialization s, ISignaturer c)
         {
             _base64 = b;
             _jSONSerialization = s;

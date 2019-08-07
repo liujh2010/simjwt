@@ -11,7 +11,7 @@ namespace SimJWT.Core.Base
         public string Encode(string s)
         {
             return Convert
-                .ToBase64String(Encoding.ASCII.GetBytes(s))
+                .ToBase64String(Encoding.UTF8.GetBytes(s))
                 .TrimEnd(padding)
                 .Replace('+', '-')
                 .Replace('/', '_');
@@ -29,7 +29,7 @@ namespace SimJWT.Core.Base
                     str += "=";
                     break;
             }
-            return Encoding.ASCII
+            return Encoding.UTF8
                 .GetString(Convert.FromBase64String(str));
         }
 

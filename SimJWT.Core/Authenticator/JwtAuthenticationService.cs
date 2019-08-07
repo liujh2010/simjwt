@@ -13,7 +13,7 @@ namespace SimJWT.Core.Authenticator
         where TPayload : Payload
         //where TCrypter : ICrypter, new()
         //where TJsonSerialization : IJSONSerialization, new()
-        where TCrypter : ICrypter
+        where TCrypter : ISignaturer
         where TJsonSerialization : IJSONSerialization
     {
         private Base64URL _base64;
