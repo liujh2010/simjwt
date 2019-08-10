@@ -36,6 +36,8 @@ namespace SimJWT.Core.JWT
 
         public Token(string jwt, IBase64URL coder, IJSONSerialization serialization, ISignaturer signaturer)
         {
+            Jwt = jwt;
+
             var arr = jwt.Split('.');
 
             Base64Header = arr[0];
