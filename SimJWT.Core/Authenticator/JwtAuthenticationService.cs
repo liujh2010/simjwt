@@ -8,16 +8,16 @@ using System.Text;
 
 namespace SimJWT.Core.Authenticator
 {
-    public class JwtAuthenticationService<THeader, TPayload, TCrypter, TJsonSerialization>
+    public class JwtAuthenticationService<THeader, TPayload, TSignaturer, TJsonSerialization>
         where THeader : Header
         where TPayload : Payload
         //where TCrypter : ICrypter, new()
         //where TJsonSerialization : IJSONSerialization, new()
-        where TCrypter : ISignaturer
+        where TSignaturer : ISignaturer
         where TJsonSerialization : IJSONSerialization
     {
         private Base64URL _base64;
-        private TCrypter _crypter;
+        private TSignaturer _signaturer;
         private TJsonSerialization _jsonSerialization;
         private JwtFactory _jwtFactory;
 
@@ -29,11 +29,11 @@ namespace SimJWT.Core.Authenticator
         //    _jwtFactory = new JwtFactory(_base64, _jsonSerialization, _crypter);
         //}
 
-        public JwtAuthenticationService(TCrypter c, TJsonSerialization j)
+        public JwtAuthenticationService(TSignaturer s, TJsonSerialization j)
         {
             _base64 = new Base64URL();
-            _jwtFactory = new JwtFactory(_base64, _jsonSerialization, _crypter);
-            _crypter = c;
+            _jwtFactory = new JwtFactory(_base64, _jsonSerialization, _signaturer);
+            _signaturer = s;
             _jsonSerialization = j;
         }
 
@@ -42,7 +42,7 @@ namespace SimJWT.Core.Authenticator
             .Jwt;
 
         public bool AuthenticationToken(string jwt) => GetTokenObject(jwt)
-            .IsAuthorizedToken(_crypter);
+            .AuthorizedToken;
 
         public Token<THeader, TPayload> GetTokenObject(string jwt) => _jwtFactory
             .GetJwtObject<THeader, TPayload>(jwt);

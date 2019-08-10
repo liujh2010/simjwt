@@ -9,15 +9,15 @@ namespace SimJWT.Core.Authenticator
 {
     public class JwtAuthenticationServiceFactory
     {
-        public JwtAuthenticationService<THeader, TPayload, TCrypter, TJsonSerialization>
-            GetService<THeader, TPayload, TCrypter, TJsonSerialization>
-            (TCrypter c, TJsonSerialization j, ServiceOption option)
+        public JwtAuthenticationService<THeader, TPayload, TSignaturer, TJsonSerialization>
+            GetService<THeader, TPayload, TSignaturer, TJsonSerialization>
+            (TSignaturer s, TJsonSerialization j, ServiceOption option)
             where THeader : Header
             where TPayload : Payload
-            where TCrypter : ISignaturer
+            where TSignaturer : ISignaturer
             where TJsonSerialization : IJSONSerialization
         {
-            return new JwtAuthenticationService<THeader, TPayload, TCrypter, TJsonSerialization>(c, j);
+            return new JwtAuthenticationService<THeader, TPayload, TSignaturer, TJsonSerialization>(s, j);
         }
     }
 }

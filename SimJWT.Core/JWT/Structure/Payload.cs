@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SimJWT.Core.JWT.Structure
 {
-    public class Payload : ClearTextBase
+    public class Payload
     {
         // issuer 签发人
         public string Iss { get; set; }

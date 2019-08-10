@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SimJWT.Core.JWT.Structure
 {
-    public class Header : ClearTextBase
+    public class Header
     {
         public string Alg { get; set; }
         public string Typ { get; set; }

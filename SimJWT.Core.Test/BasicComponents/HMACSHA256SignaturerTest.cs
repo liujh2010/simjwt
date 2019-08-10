@@ -14,8 +14,8 @@ namespace SimJWT.Core.Test.BasicComponents
         [Fact]
         public void TestGetDigest()
         {
-            var signaturer = new HMACSHA256Signaturer();
-            var hash = signaturer.GetDigest(text, secret);
+            var signaturer = new HMACSHA256Signaturer(secret);
+            var hash = signaturer.GetDigest(text);
 
             Assert.NotNull(hash);
         }
