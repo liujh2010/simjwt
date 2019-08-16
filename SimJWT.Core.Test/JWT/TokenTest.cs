@@ -123,7 +123,7 @@ namespace SimJWT.Core.Test.JWT
         {
             var actualJwt = factory.GetJwtObject<Header, Payload>(testToken.Jwt);
 
-            Assert.Equal(testToken, actualJwt, new TokenComparer<Token<Header, Payload>>());
+            Assert.Equal(testToken, actualJwt, new TokenComparer<object>());
         }
     }
 }

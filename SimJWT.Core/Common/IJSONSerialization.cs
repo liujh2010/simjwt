@@ -6,8 +6,8 @@ namespace SimJWT.Core.Common
 {
     public interface IJSONSerialization
     {
-        string SerializeToString(object o);
-        object DeserializeToObject(string s);
-        T DeserializeToObject<T>(string s) where T : class;
+        string SerializeObject(object o);
+        object DeserializeObject(string s);
+        T DeserializeObject<T>(string s) where T : class;
     }
 }

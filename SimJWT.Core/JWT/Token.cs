@@ -20,10 +20,10 @@ namespace SimJWT.Core.JWT
         public Token(THeader h, TPayload p, IBase64URL coder, IJSONSerialization serialization, ISignaturer signaturer)
         {
             Header = h;
-            Base64Header = coder.Encode(serialization.SerializeToString(h));
+            Base64Header = coder.Encode(serialization.SerializeObject(h));
 
             Payload = p;
-            Base64Payload = coder.Encode(serialization.SerializeToString(p));
+            Base64Payload = coder.Encode(serialization.SerializeObject(p));
 
             var encodedClearText = $"{Base64Header}.{Base64Payload}";
             Signature = signaturer.GetDigest(encodedClearText);
@@ -41,10 +41,10 @@ namespace SimJWT.Core.JWT
             var arr = jwt.Split('.');
 
             Base64Header = arr[0];
-            Header = serialization.DeserializeToObject<THeader>(coder.Decode(Base64Header));
+            Header = serialization.DeserializeObject<THeader>(coder.Decode(Base64Header));
 
             Base64Payload = arr[1];
-            Payload = serialization.DeserializeToObject<TPayload>(coder.Decode(Base64Payload));
+            Payload = serialization.DeserializeObject<TPayload>(coder.Decode(Base64Payload));
 
             Base64Signature = arr[2];
             Signature = coder.Decode(Base64Signature);

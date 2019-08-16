@@ -8,17 +8,17 @@ namespace SimJWT.Core.Test.Common
 {
     public class TestJsonSerialization : IJSONSerialization
     {
-        public object DeserializeToObject(string s)
+        public object DeserializeObject(string s)
         {
             return JsonConvert.DeserializeObject(s);
         }
 
-        public T DeserializeToObject<T>(string s) where T : class
+        public T DeserializeObject<T>(string s) where T : class
         {
             return JsonConvert.DeserializeObject<T>(s);
         }
 
-        public string SerializeToString(object o)
+        public string SerializeObject(object o)
         {
             return JsonConvert.SerializeObject(o);
         }

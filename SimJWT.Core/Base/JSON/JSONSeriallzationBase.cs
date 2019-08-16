@@ -8,19 +8,16 @@ namespace SimJWT.Core.Base.JSON
 {
     public abstract class JSONSeriallzationBase : IJSONSerialization
     {
-        private EnumCaseOption _caseOption;
-        private EnumFieldOption _fieldOption;
+        private SerializationOption _option;
 
         public JSONSeriallzationBase()
         {
-            _caseOption = EnumCaseOption.ToLowerCase;
-            _fieldOption = EnumFieldOption.IgIgnoreNull;
+            _option = SerializationOption.Default;
         }
 
-        public abstract string SerializeToString(object o);
-
-        public abstract string SerializeObject(object o, EnumCaseOption caseOption, EnumFieldOption fieldOption);
-        public abstract object DeserializeToObject(string s);
-        public abstract T DeserializeToObject<T>(string s) where T : class;
+        public abstract string SerializeObject(object o);
+        public abstract string SerializeObject(object o, SerializationOption option);
+        public abstract object DeserializeObject(string s);
+        public abstract T DeserializeObject<T>(string s) where T : class;
     }
 }
