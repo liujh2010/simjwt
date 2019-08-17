@@ -9,9 +9,9 @@ namespace SimJWT.Core.Base.JSON
         private StringBuilder _stringBuilder;
         private JsonProperties _jsonProperties;
 
-        public JsonWriter(StringBuilder stringBuilder, JsonProperties jsonProperties)
+        public JsonWriter( JsonProperties jsonProperties)
         {
-            _stringBuilder = stringBuilder;
+            _stringBuilder = new StringBuilder();
             _jsonProperties = jsonProperties;
         }
 
