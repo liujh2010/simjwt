@@ -10,7 +10,8 @@ namespace SimJWT.Core.Base.JSON
         {
             var reflection = new ReflectionProperty();
             var jsonProps = reflection.GetJsonProperties(o);
-            var jsonWriter = new JsonWriter(jsonProps);
+            var option = SerializationOption.LeaveNull | SerializationOption.ToLowerCamelCase;
+            var jsonWriter = new JsonWriter(jsonProps, option);
             return jsonWriter.WriteJsonString();
         }
     }

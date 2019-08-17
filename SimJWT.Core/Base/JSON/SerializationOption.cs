@@ -8,6 +8,6 @@ namespace SimJWT.Core.Base.JSON
     {
         Default = 0,
         LeaveNull = 1,      //保留空字段
-        ToLowerCase = 2,    //忽略大小写
+        ToLowerCamelCase = 2,    //转换小驼峰写法
     }
 }

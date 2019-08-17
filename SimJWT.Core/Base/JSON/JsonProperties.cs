@@ -12,15 +12,19 @@ namespace SimJWT.Core.Base.JSON
         public int StringPropertiesCount { get { return _stringProperties.Count; } }
         public int ObjectPropertiesCount { get { return _objectProperties.Count; } }
 
+        public JsonProperties()
+        {
+            _stringProperties = new Dictionary<string, string>();
+            _objectProperties = new Dictionary<string, JsonProperties>();
+        }
+
         public void AddStringProperty(string key, string value)
         {
-            if (value == null || value == "") return;
             _stringProperties.Add(key, value);
         }
 
         public void AddObjectProperty(string key, JsonProperties jp)
         {
-            if (jp == null || jp.StringPropertiesCount == 0 || jp.ObjectPropertiesCount == 0) return;
             _objectProperties.Add(key, jp);
         }
 

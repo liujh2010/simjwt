@@ -9,10 +9,18 @@ namespace SimJWT.Core.Base.JSON
         private StringBuilder _stringBuilder;
         private JsonProperties _jsonProperties;
 
-        public JsonWriter( JsonProperties jsonProperties)
+        private bool isDefault;
+        private bool isLeaveNull;
+        private bool isToLowerCamelCase;
+
+        public JsonWriter(JsonProperties jsonProperties, SerializationOption option)
         {
             _stringBuilder = new StringBuilder();
             _jsonProperties = jsonProperties;
+
+            isDefault = SerializationOption.Default == (option & SerializationOption.Default);
+            isLeaveNull = SerializationOption.LeaveNull == (option & SerializationOption.LeaveNull);
+            isToLowerCamelCase = SerializationOption.ToLowerCamelCase == (option & SerializationOption.ToLowerCamelCase);
         }
 
         private void StartWriteObject()
@@ -22,14 +30,34 @@ namespace SimJWT.Core.Base.JSON
 
         private void EndWriteObject()
         {
-            _stringBuilder.Remove(_stringBuilder.Length - 2, 1);
+            _stringBuilder.Remove(_stringBuilder.Length - 1, 1);
             _stringBuilder.Append('}');
         }
 
         private void AddOneProperty(string name, string value)
         {
-            if (name == null || name == "" || value == null || value == "") return;
-            _stringBuilder.AppendFormat("\"{0}\":\"{1}\",", name, value);
+            if (name == null || name == "") return;
+
+            if (value != null)
+            {
+                if (isDefault)
+                {
+                    _stringBuilder.AppendFormat("\"{0}\":\"{1}\",", name, value);
+                    return;
+                }
+                if (isToLowerCamelCase)
+                {
+                    _stringBuilder.AppendFormat("\"{0}\":\"{1}\",", name, ToLowerCamelCase(value));
+                    return;
+                }
+            }
+            else
+            {
+                if (isLeaveNull)
+                    _stringBuilder.AppendFormat("\"{0}\":null,", name);
+                else
+                    return;
+            }
         }
 
         private void AddOneProperty(string name, JsonProperties jsonProperties)
@@ -45,7 +73,7 @@ namespace SimJWT.Core.Base.JSON
             {
                 var current = enumerator.Current;
                 AddOneProperty(current.Key, current.Value);
-            }while (enumerator.MoveNext());
+            } while (enumerator.MoveNext());
 
             EndWriteObject();
             _stringBuilder.Append(',');
@@ -74,6 +102,15 @@ namespace SimJWT.Core.Base.JSON
             EndWriteObject();
 
             return _stringBuilder.ToString();
+        }
+
+        private string ToLowerCamelCase(string s)
+        {
+            unsafe
+            {
+                fixed (char* sf = s) sf[0] = Char.ToLower(sf[0]);
+            }
+            return s;
         }
     }
 }

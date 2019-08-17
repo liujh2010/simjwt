@@ -1,4 +1,6 @@
-﻿namespace SimJWT.Core.Base.JSON
+﻿using SimJWT.Core.JWT.Structure;
+
+namespace SimJWT.Core.Base.JSON
 {
     public class ReflectionProperty
     {
@@ -8,21 +10,23 @@
             var fields = o.GetType().GetFields();
             var jsonProps = new JsonProperties();
 
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(o);
+                jsonProps.AddStringProperty(field.Name, value?.ToString());
+            }
+
             foreach (var prop in props)
             {
-                if (prop.Name == "Header" || prop.Name == "Payload")
+                var value = prop.GetValue(o);
+                if (value is Header || value is Payload)
                 {
                     var res = PutStringProperties(prop.GetValue(o));
                     jsonProps.AddObjectProperty(prop.Name, res);
                     continue;
                 }
 
-                jsonProps.AddStringProperty(prop.Name, prop.GetValue(o).ToString());
-            }
-
-            foreach (var field in fields)
-            {
-                jsonProps.AddStringProperty(field.Name, field.GetValue(o).ToString());
+                jsonProps.AddStringProperty(prop.Name, value?.ToString());
             }
 
             return jsonProps;
@@ -36,12 +40,14 @@
 
             foreach (var prop in props)
             {
-                jsonProps.AddStringProperty(prop.Name, prop.GetValue(o).ToString());
+                var value = prop.GetValue(o);
+                jsonProps.AddStringProperty(prop.Name, value?.ToString());
             }
 
             foreach (var field in fields)
             {
-                jsonProps.AddStringProperty(field.Name, field.GetValue(o).ToString());
+                var value = field.GetValue(o);
+                jsonProps.AddStringProperty(field.Name, value?.ToString());
             }
 
             return jsonProps;
